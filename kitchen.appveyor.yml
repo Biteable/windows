@@ -7,29 +7,32 @@ driver:
   username: <%= ENV["machine_user"] %>
   password: <%= ENV["machine_pass"] %>
 
+transport:
+  name: winrm
+  elevated: true
+
 provisioner:
   name: chef_zero
   deprecations_as_errors: true
+  product_name: chef
+  product_version: 13
 
 platforms:
   - name: windows-2012R2
 
 verifier:
-  name: pester
+  name: inspec
 
 suites:
-  - name: certificate
-    run_list:
-      - recipe[test::certificate]
-  - name: feature
-    run_list:
-      - recipe[test::feature]
   - name: http_acl
     run_list:
       - recipe[test::http_acl]
-  - name: font
+  - name: user_privilege
     run_list:
-      - recipe[test::font]
-  - name: pagefile
+      - recipe[test::user_privilege]
+  - name: certificate
     run_list:
-      - recipe[test::pagefile]
+      - recipe[test::certificate]
+  - name: share
+    run_list:
+      - recipe[test::share]
